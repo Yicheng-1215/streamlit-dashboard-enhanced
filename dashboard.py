@@ -74,6 +74,18 @@ def plot_real_line_chart():
     if 'week' in table and 'Hybrid' in table and 'In Person' in table and 'Remote' in table:
         ax.plot(table['week'], table['Hybrid'], label='Hybrid', marker='o')
         ax.plot(table['week'], table['In Person'], label='In Person', marker='x')
-        ax.
+        ax.plot(table['week'], table['Remote'], label='Remote', marker='s')
+        ax.set_title("Student Count by Learning Modality")
+        ax.set_xlabel("Week")
+        ax.set_ylabel("Student Count")
+        ax.legend()
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
+    else:
+        st.write("Required columns are missing from the pivot table.")
+
+# Call the function
+plot_real_line_chart()
+
 
 
