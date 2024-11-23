@@ -25,8 +25,23 @@ col3.metric("Number of unique districts/schools:", df['district_name'].nunique()
 st.dataframe(df)
 
 # Pivot table for visualizations
-table = pd.pivot_table(df, values='student_count', index=['week'],
-                       columns=['learning_modality'], aggfunc="sum").reset_index()
+table = pd.pivot_table(
+    df,
+    values='student_count',
+    index=['week'],
+    columns=['learning_modality'],
+    aggfunc="sum",
+    fill_value=0  # Fill missing values
+).reset_index()
+
+# Debugging the pivot table
+st.write("Pivot Table Data:")
+st.dataframe(table)
+
+# Check week column format
+table['week'] = pd.to_datetime(table['week'], errors='coerce')
+st.write("Week column format after pivoting:")
+st.write(table['week'].head())
 
 # Bar charts
 st.bar_chart(
@@ -50,16 +65,26 @@ st.bar_chart(
 # Add Line Chart (using matplotlib)
 def plot_line_chart():
     st.markdown("### Line Chart: Total Students Over Time")
+    
+    # Debugging
+    st.write("Columns in table:")
+    st.write(table.columns)
+    
+    # Plotting
     fig, ax = plt.subplots()
-    ax.plot(table['week'], table['Hybrid'], label='Hybrid', marker='o')
-    ax.plot(table['week'], table['In Person'], label='In Person', marker='x')
-    ax.plot(table['week'], table['Remote'], label='Remote', marker='s')
-    ax.set_title("Student Count by Learning Modality")
-    ax.set_xlabel("Week")
-    ax.set_ylabel("Student Count")
-    ax.legend()
-    plt.xticks(rotation=45)  # Rotate week labels for better visibility
-    st.pyplot(fig)
+    if 'week' in table and 'Hybrid' in table and 'In Person' in table and 'Remote' in table:
+        ax.plot(table['week'], table['Hybrid'], label='Hybrid', marker='o')
+        ax.plot(table['week'], table['In Person'], label='In Person', marker='x')
+        ax.plot(table['week'], table['Remote'], label='Remote', marker='s')
+        ax.set_title("Student Count by Learning Modality")
+        ax.set_xlabel("Week")
+        ax.set_ylabel("Student Count")
+        ax.legend()
+        plt.xticks(rotation=45)  # Rotate week labels for better visibility
+        st.pyplot(fig)
+    else:
+        st.write("Required columns not found in the table. Check table structure.")
 
 # Call the function to display the line chart
 plot_line_chart()
+
