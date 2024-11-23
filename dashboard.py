@@ -34,13 +34,17 @@ table = pd.pivot_table(
     fill_value=0  # Fill missing values
 ).reset_index()
 
-# Debugging the pivot table
-st.write("Pivot Table Data:")
-st.dataframe(table)
+# Debugging pivot table
+st.markdown("### Debugging the Pivot Table")
+st.write("Pivot Table Columns:")
+st.write(table.columns)
 
-# Check week column format
+st.write("Sample Data from Pivot Table:")
+st.dataframe(table.head())
+
+# Ensure week column is properly formatted
 table['week'] = pd.to_datetime(table['week'], errors='coerce')
-st.write("Week column format after pivoting:")
+st.write("Week Column Format After Pivoting:")
 st.write(table['week'].head())
 
 # Bar charts
@@ -62,62 +66,14 @@ st.bar_chart(
     y="Remote",
 )
 
-# Add Line Chart (using matplotlib)
-def plot_line_chart():
-    st.markdown("### Line Chart: Total Students Over Time")
-    
-    # Debugging
-    st.write("Columns in table:")
-    st.write(table.columns)
-    
-    st.write("Sample Data from Pivot Table:")
-    st.dataframe(table.head())
-    
-    # Plotting
+# Replace plot_line_chart with plot_real_line_chart
+def plot_real_line_chart():
+    st.markdown("### Line Chart with Real Data")
     fig, ax = plt.subplots()
+
     if 'week' in table and 'Hybrid' in table and 'In Person' in table and 'Remote' in table:
         ax.plot(table['week'], table['Hybrid'], label='Hybrid', marker='o')
         ax.plot(table['week'], table['In Person'], label='In Person', marker='x')
-        ax.plot(table['week'], table['Remote'], label='Remote', marker='s')
-        ax.set_title("Student Count by Learning Modality")
-        ax.set_xlabel("Week")
-        ax.set_ylabel("Student Count")
-        ax.legend()
-        plt.xticks(rotation=45)  # Rotate week labels for better visibility
-        st.pyplot(fig)
-    else:
-        st.write("Required columns not found in the table. Check table structure.")
-
-# Ensure the function is called
-st.write("Plotting line chart...")
-plot_line_chart()
-
-# Test Line Chart with Dummy Data
-def test_line_chart():
-    st.markdown("### Test Line Chart")
-    import matplotlib.pyplot as plt
-    import pandas as pd
-
-    # Dummy data
-    test_data = pd.DataFrame({
-        'week': pd.date_range(start="2021-01-01", periods=10, freq='W'),
-        'Hybrid': range(10),
-        'In Person': [x * 2 for x in range(10)],
-        'Remote': [x * 3 for x in range(10)]
-    })
-    
-    fig, ax = plt.subplots()
-    ax.plot(test_data['week'], test_data['Hybrid'], label='Hybrid', marker='o')
-    ax.plot(test_data['week'], test_data['In Person'], label='In Person', marker='x')
-    ax.plot(test_data['week'], test_data['Remote'], label='Remote', marker='s')
-    ax.set_title("Test Line Chart with Dummy Data")
-    ax.set_xlabel("Week")
-    ax.set_ylabel("Value")
-    ax.legend()
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
-
-# Call the test function
-test_line_chart()
+        ax.
 
 
