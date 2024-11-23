@@ -70,6 +70,9 @@ def plot_line_chart():
     st.write("Columns in table:")
     st.write(table.columns)
     
+    st.write("Sample Data from Pivot Table:")
+    st.dataframe(table.head())
+    
     # Plotting
     fig, ax = plt.subplots()
     if 'week' in table and 'Hybrid' in table and 'In Person' in table and 'Remote' in table:
@@ -88,5 +91,33 @@ def plot_line_chart():
 # Ensure the function is called
 st.write("Plotting line chart...")
 plot_line_chart()
+
+# Test Line Chart with Dummy Data
+def test_line_chart():
+    st.markdown("### Test Line Chart")
+    import matplotlib.pyplot as plt
+    import pandas as pd
+
+    # Dummy data
+    test_data = pd.DataFrame({
+        'week': pd.date_range(start="2021-01-01", periods=10, freq='W'),
+        'Hybrid': range(10),
+        'In Person': [x * 2 for x in range(10)],
+        'Remote': [x * 3 for x in range(10)]
+    })
+    
+    fig, ax = plt.subplots()
+    ax.plot(test_data['week'], test_data['Hybrid'], label='Hybrid', marker='o')
+    ax.plot(test_data['week'], test_data['In Person'], label='In Person', marker='x')
+    ax.plot(test_data['week'], test_data['Remote'], label='Remote', marker='s')
+    ax.set_title("Test Line Chart with Dummy Data")
+    ax.set_xlabel("Week")
+    ax.set_ylabel("Value")
+    ax.legend()
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+
+# Call the test function
+test_line_chart()
 
 
