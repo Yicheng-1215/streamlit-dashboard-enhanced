@@ -85,6 +85,8 @@ def plot_line_chart():
     else:
         st.write("Required columns not found in the table. Check table structure.")
 
-# Call the function to display the line chart
+# Ensure the function is called
+st.write("Plotting line chart...")
 plot_line_chart()
+
 
